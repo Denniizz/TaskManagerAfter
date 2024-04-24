@@ -1,11 +1,28 @@
-version: '3'
-services:
+version: "3.8"
+networks:
+  jedi:
 
+services:
   app:
-   # image: a55936862ffe
+    container_name: manager-app
     platform: linux/x86_64
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "6280:8080"
+    networks:
+      - jedi
+
+  db:
+    container_name: manager-db
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: tasks
+    networks:
+      - jedi
+
