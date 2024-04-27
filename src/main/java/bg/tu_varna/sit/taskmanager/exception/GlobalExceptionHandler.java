@@ -27,7 +27,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-        @Override
+    @ExceptionHandler(TaskApiException.class)
+    public ResponseEntity<ErrorDetails> handleTaskApiException(
+            TaskApiException exception) {
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
         protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                       HttpHeaders headers,
                                                                       HttpStatusCode status,

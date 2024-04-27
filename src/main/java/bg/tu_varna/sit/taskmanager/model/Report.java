@@ -1,31 +1,32 @@
 package bg.tu_varna.sit.taskmanager.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
+@Getter
 @Entity
-@Table(name="tasks")
-public class Task {
+@Table(name="reports")
+public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
-    private String description;
-    private String deadline;
+    private String content;
+    private double hoursWorked;
     @CreationTimestamp
     private Instant createdOn;
     @UpdateTimestamp
     private Instant updatedOn;
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private Set<Report> reportSet;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="task_id", nullable = false)
+    private Task task;
 }
